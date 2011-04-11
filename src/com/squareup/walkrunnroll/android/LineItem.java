@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class LineItem {
 
-  private final Product product;
+  private final Item product;
   private int quantity;
   private final List<Listener> listeners = new ArrayList<Listener>();
 
@@ -16,7 +16,7 @@ public class LineItem {
     listeners.add(listener);
   }
 
-  public LineItem(Product product) {
+  public LineItem(Item product) {
     this.product = product;
   }
 
@@ -45,7 +45,7 @@ public class LineItem {
     notifyListeners();
   }
 
-  public Product product() {
+  public Item product() {
     return product;
   }
 

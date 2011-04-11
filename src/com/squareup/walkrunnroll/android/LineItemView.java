@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,24 +33,22 @@ public class LineItemView extends EnhancedLinearLayout
     dp = context.getResources().getDimension(
         com.squareup.walkrunnroll.android.R.dimen.dp);
 
-    int buttonSize = (int) (96 * dp);
-
-    ImageView itemButton = new ImageView(context);
-    itemButton.setImageResource(lineItem.product().iconId);
+    Button itemButton = new Button(context);
+    itemButton.setText(lineItem.product().label);
     itemButton.setOnClickListener(new OnClickListener() {
       public void onClick(View v) {
         lineItem.add();
       }
     });
-    itemButton.setScaleType(ImageView.ScaleType.FIT_XY);
-    itemButton.setPadding((int) (4 * dp), (int) (2 * dp), (int) (8 * dp),
-        (int) (2 * dp));
 
-    addView(itemButton, buttonSize, buttonSize);
+    addView(itemButton, (int) (96 * dp), (int) (54 * dp));
 
     priceView = new TextView(context);
     priceView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
     priceView.setTypeface(Typeface.DEFAULT_BOLD);
+
+    itemButton.setTextSize(16);
+
     addView(priceView, FILL_PARENT, FILL_PARENT, 1);
 
     removeButton = new ImageView(context);
@@ -60,7 +59,8 @@ public class LineItemView extends EnhancedLinearLayout
       }
     });
     removeButton.setScaleType(ImageView.ScaleType.CENTER);
-    addView(removeButton, buttonSize >> 1, buttonSize);
+
+    addView(removeButton, (int) (48 * dp), (int) (54 * dp));
 
     lineItem.add(this);
 
@@ -72,13 +72,13 @@ public class LineItemView extends EnhancedLinearLayout
       priceView.setText(String.format("\u00D7%d = $%d",
           lineItem.quantity(), lineItem.price()));
       priceView.setTextSize(24);
-      priceView.setTextColor(Color.DKGRAY);
+      priceView.setTextColor(Color.WHITE);
       priceView.setShadowLayer(1, 1, 1, Color.rgb(0x99, 0x99, 0x99));
 
       removeButton.setVisibility(View.VISIBLE);
     } else {
-      Product product = lineItem.product();
-      priceView.setText(product.label + " - $" + product.price);
+      Item product = lineItem.product();
+      priceView.setText(" - $" + product.price);
       priceView.setTextSize(16);
       priceView.setTextColor(Color.GRAY);
       priceView.setShadowLayer(1, 1, 1, Color.rgb(0xee, 0xee, 0xee));

@@ -137,7 +137,7 @@ public class ItemActivity extends Activity
     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
         FILL_PARENT, WRAP_CONTENT);
 
-    for (Product product : products()) {
+    for (Item product : products()) {
       LineItem lineItem = new LineItem(product);
       lineItem.add(this);
       lineItems.add(lineItem);
@@ -196,7 +196,7 @@ public class ItemActivity extends Activity
           note.append(", ");
         }
         first = false;
-        Product product = lineItem.product();
+        Item product = lineItem.product();
         note.append(lineItem.quantity()).append(' ').append(
             lineItem.quantity() == 1 ? product.label : product.pluralLabel);
       }
@@ -223,7 +223,7 @@ public class ItemActivity extends Activity
     return !inputEnabled || super.dispatchTouchEvent(ev);
   }
 
-  Product[] products() {
+  Item[] products() {
     throw new UnsupportedOperationException();
   }
 }

@@ -1,25 +1,28 @@
 package com.squareup.walkrunnroll.android;
 
 /**
- * Product definitions.
+ * Item definitions.
  *
  * @author Bob Lee (bob@squareup.com)
  */
-public enum Product {
+public enum Item {
 
+  ADULT("Adult", 30),
+  CHILD("Child", "Children", 10),
+  TRIBUTE("Tribute", 25),
+  BIB("Bib", 1),
+  BRACELET("Bracelet", 3)
   ;
 
-  final int iconId;
   final String label;
   final String pluralLabel;
   final int price;
 
-  Product(int iconId, String label, int price) {
-    this(iconId, label, label + "s", price);
+  Item(String label, int price) {
+    this(label, label + "s", price);
   }
 
-  Product(int iconId, String label, String pluralLabel, int price) {
-    this.iconId = iconId;
+  Item(String label, String pluralLabel, int price) {
     this.label = label;
     this.pluralLabel = pluralLabel;
     this.price = price;

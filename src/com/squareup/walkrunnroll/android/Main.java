@@ -11,41 +11,27 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.method.KeyListener;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.squareup.android.Bill;
+import com.squareup.android.Currency;
+import com.squareup.android.Square;
 
-/**
- * Collects the following information:
- *
- * <ol>
- *  <li>Name</li>
- *  <li>Email</li>
- *  <li>Employer</li>
- *  <li>Occupation</li>
- *  <li>Address (street, city, state, zip)</li>
- *  <li>Eligibility (yes, no)</li>
- *  <li>Donation amount</li>
- *  <li>Outcome</li>
- * </ol>
- */
 public class Main extends Activity {
 
-  private static final String TAG = "SquareFundraiser";
-
   private static final int VALIDATION_DIALOG = 0;
-  private static final int IO_ERROR_DIALOG = 1;
   private static final int CLEAR_DIALOG = 2;
   private static final int EXIT_DIALOG = 3;
 
   private Spinner agency;
   private TextView name;
   private TextView amount;
+  private ItemList items;
 
   private int dollars;
-
-  private TextView[] textViews;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -57,14 +43,19 @@ public class Main extends Activity {
     name = findTextViewById(R.id.name);
     amount = findTextViewById(R.id.amount);
 
+    items = (ItemList) findViewById(R.id.items);
+
     configureAgencyList();
-
-    textViews = new TextView[] { name, amount };
-
     configureButtons();
 
     amount.setKeyListener(new AmountListener());
     amount.setCursorVisible(false);
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    
+    inputEnabled = true;
   }
 
   private void configureButtons() {
@@ -119,24 +110,64 @@ public class Main extends Activity {
       return;
     }
 
-//    Square square = new Square(this);
-//    LineItem donation = new LineItem.Builder()
-//      .description("Contribution from " + name.getText())
-//      .price(new Money(dollars * 100, Currency.USD))
-//      .build();
-//    square.squareUp(new Bill.Builder()
-//      .add(donation)
-//      .defaultEmail(email.getText().toString())
-//      .build());
+    inputEnabled = false;
+
+    int total = items.computeTotal() + dollars;
+
+    StringBuilder note = new StringBuilder();
+
+    note.append("From ").append(name.getText())
+        .append(" benefiting ").append(agency.getSelectedItem())
+        .append(": ");
+
+    boolean first = true;
+    for (LineItem lineItem : items.items()) {
+      if (lineItem.quantity() > 0) {
+        if (!first) {
+          note.append(", ");
+        }
+        first = false;
+        Item product = lineItem.product();
+        note.append(lineItem.quantity()).append(' ').append(
+            lineItem.quantity() == 1 ? product.label : product.pluralLabel);
+      }
+    }
+
+    if (dollars > 0) {
+      if (hasItems()) {
+        note.append(", ");
+      }
+
+      note.append("$").append(dollars).append(" donation");
+    }
+
+    if (note.length() > 140) {
+      note.setLength(140 - 3);
+      note.append("...");
+    }
+
+    com.squareup.android.LineItem lineItem
+        = new com.squareup.android.LineItem.Builder()
+            .price(total * 100, Currency.USD)
+            .description(note.toString())
+            .build();
+
+    Bill bill = Bill.containing(lineItem);
+
+    new Square(this).squareUp(bill);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode,
       Intent data) {
     if (resultCode == RESULT_OK) {
       startOver();
-    } else {
-      showDialog(CLEAR_DIALOG);
     }
+  }
+
+  @Override protected void onPrepareDialog(int id, Dialog dialog) {
+    super.onPrepareDialog(id, dialog);
+
+    if (id == VALIDATION_DIALOG) dialog.setTitle(validate());
   }
 
   @Override protected Dialog onCreateDialog(int id) {
@@ -171,13 +202,6 @@ public class Main extends Activity {
             }
           })
           .create();
-      case IO_ERROR_DIALOG:
-        return new AlertDialog.Builder(this)
-          .setCancelable(true)
-          .setTitle("I/O Error")
-          .setMessage("Please check your SD card and try again.")
-          .setNegativeButton("Dismiss", null)
-          .create();
     }
 
     throw new AssertionError();
@@ -205,14 +229,28 @@ public class Main extends Activity {
    * focus to first invalid field and returns an error message.
    */
   private String validate() {
-    for (TextView textView : textViews) {
-      if (textView.getText().toString().trim().length() == 0) {
-        textView.requestFocus();
-        return "Missing Input";
-      }
+    if (name.getText().toString().trim().length() == 0) {
+      name.requestFocus();
+      return "Missing Name";
+    }
+
+    if (agency.getSelectedItemPosition() == 0) {
+      agency.requestFocus();
+      return "Missing Agency";
+    }
+
+    if (!hasItems() && dollars == 0) {
+      return "Missing Item or Donation";
     }
 
     return null;
+  }
+
+  boolean hasItems() {
+    for (LineItem lineItem : items.items()) {
+      if (lineItem.quantity() > 0) return true;
+    }
+    return false;
   }
 
   private class AmountListener implements KeyListener {
@@ -249,5 +287,11 @@ public class Main extends Activity {
 
     public void clearMetaKeyState(View view, Editable content, int states) {
     }
+  }
+
+  private boolean inputEnabled = true;
+
+  @Override public boolean dispatchTouchEvent(MotionEvent ev) {
+    return !inputEnabled || super.dispatchTouchEvent(ev);
   }
 }
