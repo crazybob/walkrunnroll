@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.squareup.walkrunnroll.android"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+    <supports-screens
+      android:smallScreens="true"
+      android:normalScreens="true"
+      android:largeScreens="true"
+      android:anyDensity="true"/>
+
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="9"/>
+
+    <application android:label="Walk Run 'n Roll"
+                 android:icon="@drawable/logo"
+                 android:theme="@android:style/Theme.NoTitleBar"
+                 >
+        <activity
+              android:label="Walk Run 'n Roll"
+              android:name="Main"
+              >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

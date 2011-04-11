@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="agency_prompt">Choose an agency</string>
+  <string-array name="agencies">
+    <item>Agency</item>
+    <item>Center for Autism Education</item>
+    <item>Center for Head Injury Services</item>
+    <item>Community Living Inc.</item>
+    <item>Emmaus Homes</item>
+    <item>Giant Steps</item>
+    <item>Life Skills</item>
+    <item>Pathways to Independence</item>
+    <item>Pujols Family Foundation</item>
+    <item>Rainbow Village</item>
+    <item>TouchPoint Autism Services</item>
+  </string-array>
+</resources>
