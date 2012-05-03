@@ -41,8 +41,7 @@ public class ItemActivity extends Activity
     Window w = getWindow();
     w.setFormat(PixelFormat.RGBA_8888);
 
-    dp = getResources().getDimension(
-        com.squareup.walkrunnroll.android.R.dimen.dp);
+    dp = getResources().getDimension(R.dimen.dp);
 
     EnhancedLinearLayout layout = new EnhancedLinearLayout(this);
     layout.setOrientation(LinearLayout.VERTICAL);

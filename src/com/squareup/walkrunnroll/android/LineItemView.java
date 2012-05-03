@@ -30,8 +30,7 @@ public class LineItemView extends EnhancedLinearLayout
 
     setOrientation(HORIZONTAL);
 
-    dp = context.getResources().getDimension(
-        com.squareup.walkrunnroll.android.R.dimen.dp);
+    dp = context.getResources().getDimension(com.squareup.walkrunnroll.android.R.dimen.dp);
 
     Button itemButton = new Button(context);
     itemButton.setText(lineItem.product().label);
@@ -75,7 +74,7 @@ public class LineItemView extends EnhancedLinearLayout
       priceView.setTextColor(Color.WHITE);
       priceView.setShadowLayer(1, 1, 1, Color.rgb(0x99, 0x99, 0x99));
 
-      removeButton.setVisibility(View.VISIBLE);
+      removeButton.setVisibility(VISIBLE);
     } else {
       Item product = lineItem.product();
       priceView.setText(" - $" + product.price);
@@ -83,7 +82,7 @@ public class LineItemView extends EnhancedLinearLayout
       priceView.setTextColor(Color.GRAY);
       priceView.setShadowLayer(1, 1, 1, Color.rgb(0xee, 0xee, 0xee));
 
-      removeButton.setVisibility(View.GONE);
+      removeButton.setVisibility(GONE);
     }
   }
 }

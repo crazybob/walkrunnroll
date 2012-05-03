@@ -7,11 +7,9 @@ package com.squareup.walkrunnroll.android;
  */
 public enum Item {
 
+  FAMILY("Family", 65),
   ADULT("Adult", 30),
   CHILD("Child", "Children", 10),
-  TRIBUTE("Tribute", 25),
-  BIB("Bib", 1),
-  BRACELET("Bracelet", 3)
   ;
 
   final String label;

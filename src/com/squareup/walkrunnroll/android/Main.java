@@ -117,7 +117,7 @@ public class Main extends Activity {
     StringBuilder note = new StringBuilder();
 
     note.append("From ").append(name.getText())
-        .append(" benefiting ").append(agency.getSelectedItem())
+        .append(", to ").append(agency.getSelectedItem())
         .append(": ");
 
     boolean first = true;

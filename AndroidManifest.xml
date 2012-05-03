@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.squareup.walkrunnroll.android"
-      android:versionCode="2"
-      android:versionName="1.1">
+      android:versionCode="5"
+      android:versionName="1.4">
 
     <supports-screens
       android:smallScreens="true"
@@ -10,7 +10,7 @@
       android:largeScreens="true"
       android:anyDensity="true"/>
 
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="9"/>
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="10"/>
 
     <application android:label="Walk Run 'n Roll"
                  android:icon="@drawable/logo"
